@@ -1,0 +1,9 @@
+resources:
+- ../../base
+namePrefix: a-
+commonLabels:
+  app: a
+configMapGenerator:
+  - name: nginx-html
+    files:
+    - index.html

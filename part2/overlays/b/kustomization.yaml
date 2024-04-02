@@ -1,0 +1,12 @@
+resources:
+- ../../base
+namePrefix: b-
+replicas:
+- name: b-my-nginx
+  count: 3
+commonLabels:
+  app: b
+configMapGenerator:
+- name: nginx-html
+  files:
+  - index.html
