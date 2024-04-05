@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dev
+  namespace: dev
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`wil.example.com`)
+      priority: 12
+      services:
+        - name: dev
+          port: 8888
+
+  tls:
+    certResolver: default

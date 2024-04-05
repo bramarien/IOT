@@ -28,19 +28,22 @@ sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
 rm argocd-linux-amd64
 
 kubectl create namespace argocd
+kubectl create namespace dev
 kubectl apply -k /vagrant/argocd
 
 kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=15m
 
 kubectl apply -f /vagrant/ingress.yaml
+kubectl apply -f /vagrant/ingressDev.yaml 
 
 argocd admin initial-password -n argocd > /vagrant/argoPassNoClean
 echo $(head -n 1 /vagrant/argoPassNoClean) > /vagrant/argoPass ; rm /vagrant/argoPassNoClean
 echo "192.168.56.110  argocd.example.com wil.example.com" >> /etc/hosts
-chmod +r /vagrant/argoPass
+chmod 777 /vagrant/argoPass
 export ARGO_PASS=`cat /vagrant/argoPass`
 
 
-argocd login argocd.example.com --username='admin' --password=$ARGO_PASS --insecure
+argocd login argocd.example.com --username admin --password $ARGO_PASS --insecure
 
 argocd app create dev --repo https://github.com/bramarien/IOT-app.git --path devWil --dest-server https://kubernetes.default.svc --dest-namespace dev --insecure
+argocd app set dev --sync-policy automated --auto-prune --self-heal
