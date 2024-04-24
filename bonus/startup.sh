@@ -52,7 +52,7 @@ kubectl create namespace dev
 kubectl create namespace gitlab
 kubectl apply -k /vagrant/argocd
 
-kubectl wait --for=condition=Ready pods --all -n argocd --timeout=15m
+kubectl wait --for=condition=Ready pods --all -n argocd --timeout=3m
 
 kubectl apply -f /vagrant/ingress.yaml
 kubectl apply -f /vagrant/ingressDev.yaml 

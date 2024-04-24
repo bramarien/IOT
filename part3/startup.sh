@@ -31,7 +31,7 @@ kubectl create namespace argocd
 kubectl create namespace dev
 kubectl apply -k /vagrant/argocd
 
-kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=15m
+kubectl wait --for=condition=Ready pods --all -n argocd --timeout=15m
 
 kubectl apply -f /vagrant/ingress.yaml
 kubectl apply -f /vagrant/ingressDev.yaml 
