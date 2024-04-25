@@ -39,6 +39,6 @@ argocd  --grpc-web app create dev --repo https://github.com/bramarien/IOT-app.gi
 argocd  --grpc-web app set dev --sync-policy automated --auto-prune --self-heal
 
 
-kubectl wait --for=condition=Ready pods --all -n dev --timeout=15m
+until kubectl wait --for=condition=Ready pods --all -n dev --timeout=15m; do printf "\rWaiting for Wil's application to be deployed";done
 
 echo "Wil application is now deployed, you can access to it with url: https://wil.iot/"
