@@ -32,7 +32,7 @@ kubectl apply -f /vagrant/part3/confs/ingressDev.yaml
 # Log-in to ArgoCD
 until argocd admin initial-password -n argocd 2>/dev/null;do printf "\rWaiting for argocd to be ready...";done
 export "ARGO_PASS"="$(argocd admin initial-password -n argocd | head -n1 )"
-argocd --grpc-web login argocd.iot --username admin --password "$ARGO_PASS" --insecure
+echo "y" | argocd --grpc-web login argocd.iot --username admin --password "$ARGO_PASS" --insecure
 
 # Deploy Application
 argocd  --grpc-web app create dev --repo https://github.com/bramarien/IOT-app.git --path devWil --dest-server https://kubernetes.default.svc --dest-namespace dev --insecure
