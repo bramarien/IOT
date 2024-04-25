@@ -29,12 +29,12 @@ rm argocd-linux-amd64
 
 kubectl create namespace argocd
 kubectl create namespace dev
-kubectl apply -k /vagrant/argocd
+kubectl apply -k /vagrant/confs/argocd
 
 kubectl wait --for=condition=Ready pods --all -n argocd --timeout=15m
 
-kubectl apply -f /vagrant/ingress.yaml
-kubectl apply -f /vagrant/ingressDev.yaml 
+kubectl apply -f /vagrant/confs/ingress.yaml
+kubectl apply -f /vagrant/confs/ingressDev.yaml
 
 argocd admin initial-password -n argocd > /vagrant/argoPassNoClean
 echo $(head -n 1 /vagrant/argoPassNoClean) > /vagrant/argoPass ; rm /vagrant/argoPassNoClean
