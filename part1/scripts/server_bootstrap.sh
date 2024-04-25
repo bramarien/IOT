@@ -1,11 +1,4 @@
-#!/bin/bash
-apt-get update
-export INSTALL_K3S_EXEC="--node-ip 192.168.56.110"
-until [ -f /var/lib/rancher/k3s/server/node-token ]
-do
-    sleep 1
-done
-cat /var/lib/rancher/k3s/server/node-token > /vagrant/token
+#!/usr/bin/env bash
 
 # Update packages
 apt-get update
@@ -19,9 +12,10 @@ apt-get update
   # Execute install script
   bash /vagrant/scripts/k3s_install.sh --bind-address 192.168.56.110 --node-ip 192.168.56.110
 
+  until [ -f /var/lib/rancher/k3s/server/node-token ]
+  do
+      sleep 1
+  done
+
   # Copy token to make it accessible for agent
   cp /var/lib/rancher/k3s/server/node-token /vagrant/k3s_server_token
-
-  # Permissions on /etc/rancher/k3s/k3s.yaml
-  chown root:vagrant /etc/rancher/k3s/k3s.yaml
-  chmod g+r /etc/rancher/k3s/k3s.yaml
