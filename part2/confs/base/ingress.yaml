@@ -4,24 +4,24 @@ metadata:
   name: name-virtual-host-ingress
 spec:
   rules:
-  - host: a.things
+  - host: app1.com
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: a-my-nginx
+            name: app1-my-nginx
             port:
               number: 80
-  - host: b.things
+  - host: app2.com
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: b-my-nginx
+            name: app2-my-nginx
             port:
               number: 80
   - http:
@@ -30,6 +30,6 @@ spec:
         path: "/"
         backend:
           service:
-            name: c-my-nginx
+            name: app3-my-nginx
             port:
               number: 80
