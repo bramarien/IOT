@@ -18,7 +18,7 @@ kubectl apply -k /vagrant/confs/overlays/app2
 kubectl apply -k /vagrant/confs/overlays/app3
 
 # Wait for applications to be ready
-kubectl wait --for=condition=Ready pods --all --timeout=3m
+until kubectl wait --for=condition=Ready pods --all --timeout=3m 2>/dev/null;do printf "\rWaiting for applications to be ready";done
 
 echo "Server is now ready !"
 echo
