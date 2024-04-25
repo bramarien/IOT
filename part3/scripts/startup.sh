@@ -37,3 +37,8 @@ argocd --grpc-web login argocd.iot --username admin --password "$ARGO_PASS" --in
 # Deploy Application
 argocd  --grpc-web app create dev --repo https://github.com/bramarien/IOT-app.git --path devWil --dest-server https://kubernetes.default.svc --dest-namespace dev --insecure
 argocd  --grpc-web app set dev --sync-policy automated --auto-prune --self-heal
+
+
+kubectl wait --for=condition=Ready pods --all -n dev --timeout=15m
+
+echo "Wil application is now deployed, you can access to it with url: https://wil.iot/"
