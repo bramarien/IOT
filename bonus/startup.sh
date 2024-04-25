@@ -41,7 +41,6 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 #setup cluster
 k3d cluster create dev-cluster --port 8080:80@loadbalancer --port 443:443@loadbalancer
 
-
 #setup argoCD
 curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
 sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
@@ -52,25 +51,11 @@ kubectl create namespace dev
 kubectl create namespace gitlab
 kubectl apply -k /vagrant/argocd
 
-kubectl wait --for=condition=Ready pods --all -n argocd --timeout=3m
+until kubectl wait --for=condition=Ready pods --all -n argocd --timeout=5m ; do printf "\rWaiting for Argocd to be Ready" ; done
 
 kubectl apply -f /vagrant/ingress.yaml
 kubectl apply -f /vagrant/ingressDev.yaml 
-
-argocd admin initial-password -n argocd | head -n 1 > /vagrant/argoPass
-chmod +r /vagrant/argoPass
-ARGO_PASS=`cat /vagrant/argoPass`
-
-
-argocd login argocd.example.com --username admin --password $ARGO_PASS --insecure --grpc-web
-
-argocd app create dev --repo https://github.com/bramarien/IOT-app.git --path devWil --dest-server https://kubernetes.default.svc --dest-namespace dev --insecure --grpc-web
-argocd app set dev --sync-policy automated --auto-prune --self-heal --grpc-web
-
-
-
-
-# BONUS
+kubectl apply -f /vagrant/ingressGitlab.yaml 
 
 #Instal Helm
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -83,3 +68,18 @@ helm repo add gitlab https://charts.gitlab.io/
 #install gitlab
 helm install gitlab gitlab/gitlab --set certmanager.install=false --set global.ingress.configureCertmanager="false" -n gitlab
 
+kubectl get secret gitlab-gitlab-initial-root-password -n gitlab -o jsonpath='{.data.password}' | base64 --decode > /vagrant/gitPW
+
+until kubectl wait --for=condition=Ready pods --all -n gitlab --timeout=5m 2>/dev/null; do printf "\rWaiting for Gitlab to be Ready" ; done
+
+#setup git
+git clone https://github.com/bramarien/IOT-app.git
+cd IOT-app
+PW=`cat /vagrant/gitPW`
+git config http.sslVerify false
+git remote add iot https://root:$PW@gitlab.example.com/root/devWil
+git push iot
+
+#argocd App setup
+argocd admin initial-password -n argocd | head -n 1 > /vagrant/argoPW
+chmod a+r /vagrant/argoPW
