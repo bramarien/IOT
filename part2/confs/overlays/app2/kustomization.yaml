@@ -1,11 +1,11 @@
 resources:
 - ../../base
-namePrefix: b-
+namePrefix: app2-
 replicas:
-- name: b-my-nginx
+- name: app2-my-nginx
   count: 3
 commonLabels:
-  app: b
+  app: app2
 configMapGenerator:
 - name: nginx-html
   files:

@@ -1,8 +1,8 @@
 resources:
 - ../../base
-namePrefix: a-
+namePrefix: app1-
 commonLabels:
-  app: a
+  app: app1
 configMapGenerator:
   - name: nginx-html
     files:
