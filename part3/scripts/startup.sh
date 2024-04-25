@@ -8,7 +8,7 @@ curl -sLO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stab
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # Setup Cluster
-k3d cluster create dev-cluster --port 8080:80@loadbalancer --port 443:443@loadbalancer
+k3d cluster create dev-cluster --port 8080:80@loadbalancer --port 443:443@loadbalancer --port 8888:8888@loadbalancer
 
 # Setup ArgoCD
 
@@ -19,19 +19,19 @@ k3d cluster create dev-cluster --port 8080:80@loadbalancer --port 443:443@loadba
 
   # Apply Configurations
   kubectl create namespace argocd
+  kubectl create namespace dev
   kubectl apply -k /vagrant/part3/confs/argocd
 
 # Wait for ArgoCD to be deployed
 kubectl wait --for=condition=Ready pods --all -n argocd --timeout=15m
 
 # Create Ingress Configuration for application
-kubectl create namespace dev
 kubectl apply -f /vagrant/part3/confs/ingress.yaml
 kubectl apply -f /vagrant/part3/confs/ingressDev.yaml
 
 # Log-in to ArgoCD
 until argocd admin initial-password -n argocd 2>/dev/null;do printf "\rWaiting for argocd to be ready...";done
-export "ARGO_PASS"="$(argocd admin initial-password -n argocd | head -n1)"
+export "ARGO_PASS"="$(argocd admin initial-password -n argocd | head -n1 )"
 argocd --grpc-web login argocd.iot --username admin --password "$ARGO_PASS" --insecure
 
 # Deploy Application
