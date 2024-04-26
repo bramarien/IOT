@@ -10,13 +10,12 @@ Vagrant.configure("2") do |config|
     # Provider Configuration
     config.vm.provider "virtualbox" do |vb|
      vb.cpus = "12"
-     vb.memory = "8000"
+     vb.memory = "12000"
 
     # Network Configuration
     config.vm.network "forwarded_port", guest: 3128, host: 3128, host_ip: "127.0.0.1"
 
     # Provisioning script
-    config.vm.provision "shell", path: "startup.sh"
-
+    config.vm.provision "shell", path: "scripts/startup.sh"
    end
 end

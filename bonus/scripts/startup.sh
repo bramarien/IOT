@@ -45,13 +45,13 @@ rm argocd-linux-amd64
 kubectl create namespace argocd
 kubectl create namespace dev
 kubectl create namespace gitlab
-kubectl apply -k /vagrant/argocd
+kubectl apply -k /vagrant/confs/argocd
 
 until kubectl wait --for=condition=Ready pods --all -n argocd --timeout=5m ; do printf "\rWaiting for Argocd to be Ready" ; done
 
-kubectl apply -f /vagrant/ingress.yaml
-kubectl apply -f /vagrant/ingressDev.yaml 
-kubectl apply -f /vagrant/ingressGitlab.yaml 
+kubectl apply -f /vagrant/confs/ingress.yaml
+kubectl apply -f /vagrant/confs/ingressDev.yaml
+kubectl apply -f /vagrant/confs/ingressGitlab.yaml
 
 # Instal Helm
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
