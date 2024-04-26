@@ -1,18 +1,18 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: dev
-  namespace: dev
+  name: gitlab
+  namespace: gitlab
 spec:
   entryPoints:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`wil.example.com`)
+      match: Host(`gitlab.iot`)
       priority: 12
       services:
-        - name: dev
-          port: 8888
+        - name: gitlab-webservice-default
+          port: 8181
 
   tls:
     certResolver: default
