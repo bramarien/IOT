@@ -83,4 +83,4 @@ chmod a+r /vagrant/argoPW
 echo "Server is now installed with gitlab (gitlab.iot) and ArgoCD (argocd.iot)"
 echo ""
 echo "A demo project has been pushed on https://gitlab.iot/root/devWil, you can deploy it on ArgoCD by making
-it public and launching the script argocd_app_create.sh"
+it public and launching the script scripts/argocd_app_create.sh"
