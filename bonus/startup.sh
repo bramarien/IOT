@@ -17,7 +17,7 @@ cache deny all
 http_port 3128
 EOF
 
-echo "127.0.0.1  argocd.example.com gitlab.example.com wil.example.com" >> /etc/hosts
+echo "127.0.0.1  argocd.iot gitlab.iot wil.iot" >> /etc/hosts
 systemctl restart squid
 
 # setup docker 
@@ -77,7 +77,7 @@ git clone https://github.com/bramarien/IOT-app.git
 cd IOT-app
 PW=`cat /vagrant/gitPW`
 git config http.sslVerify false
-git remote add iot https://root:$PW@gitlab.example.com/root/devWil
+git remote add iot https://root:$PW@gitlab.iot/root/devWil
 git push iot
 
 #argocd App setup

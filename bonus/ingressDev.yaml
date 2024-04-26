@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`wil.example.com`)
+      match: Host(`wil.iot`)
       priority: 12
       services:
         - name: dev
