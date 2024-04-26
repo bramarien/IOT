@@ -35,7 +35,7 @@ export "ARGO_PASS"="$(argocd admin initial-password -n argocd | head -n1 )"
 echo "y" | argocd --grpc-web login argocd.iot --username admin --password "$ARGO_PASS" --insecure
 
 # Deploy Application
-argocd  --grpc-web app create dev --repo https://github.com/bramarien/IOT-app.git --path devWil --dest-server https://kubernetes.default.svc --dest-namespace dev --insecure
+argocd  --grpc-web app create dev --repo https://github.com/bramarien/elaignel-argocd.git --path devWil --dest-server https://kubernetes.default.svc --dest-namespace dev --insecure
 argocd  --grpc-web app set dev --sync-policy automated --auto-prune --self-heal
 
 
